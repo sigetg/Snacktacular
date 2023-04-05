@@ -3,7 +3,6 @@
 //  Snacktacular
 //
 //  Created by George Sigety on 3/27/23.
-//
 
 import SwiftUI
 import MapKit
@@ -49,7 +48,7 @@ struct SpotDetailView: View {
             }
             .padding(.horizontal)
             
-            Map(coordinateRegion: $mapRegion, showsUserLocation: true,  annotationItems: annotations) { annotation in
+            Map(coordinateRegion: $mapRegion, showsUserLocation: true, annotationItems: annotations) { annotation in
                 MapMarker(coordinate: annotation.coordinate)
             }
             .frame(height: 250)
@@ -66,7 +65,6 @@ struct SpotDetailView: View {
                         } label: {
                             Text(review.title) //TODO: Create a custom cell showing stars, title and body
                         }
-                        
                     }
                 } header: {
                     HStack {
@@ -78,7 +76,7 @@ struct SpotDetailView: View {
                             .fontWeight(.black)
                             .foregroundColor(Color("SnackColor"))
                         Spacer()
-                        Button("Rate It") {
+                        Button("Rate It!") {
                             if spot.id == nil {
                                 showSaveAlert.toggle()
                             } else {
@@ -92,9 +90,8 @@ struct SpotDetailView: View {
                     }
                 }
                 .headerProminence(.increased)
-                .listStyle(.plain)
-
             }
+            .listStyle(.plain)
             
             Spacer()
             

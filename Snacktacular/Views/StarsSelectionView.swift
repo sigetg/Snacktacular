@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StarSelectionView: View {
+struct StarsSelectionView: View {
     @Binding var rating: Int
     let highestRating = 5
     let unselected = Image(systemName: "star")
@@ -40,6 +40,6 @@ struct StarSelectionView: View {
 
 struct StarSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        StarSelectionView(rating: .constant(4))
+        StarsSelectionView(rating: .constant(4))
     }
 }

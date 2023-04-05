@@ -30,7 +30,7 @@ struct ReviewView: View {
                 .font(.title2)
                 .bold()
             HStack {
-                StarSelectionView(rating: $review.rating)
+                StarsSelectionView(rating: $review.rating)
                     .overlay {
                         RoundedRectangle(cornerRadius: 5)
                             .stroke(.gray.opacity(0.5), lineWidth: 2)

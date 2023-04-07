@@ -15,6 +15,7 @@
 		DA45D97629DA0F0300EAB4A0 /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA45D97529DA0F0300EAB4A0 /* ReviewView.swift */; };
 		DA45D97829DA129A00EAB4A0 /* StarsSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA45D97729DA129A00EAB4A0 /* StarsSelectionView.swift */; };
 		DA45D97A29DA280000EAB4A0 /* ReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA45D97929DA280000EAB4A0 /* ReviewViewModel.swift */; };
+		DA9CE85729E0C1FD008AD022 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9CE85629E0C1FD008AD022 /* Photo.swift */; };
 		DACD0A7029D0F52200B46C56 /* SnacktacularApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD0A6F29D0F52200B46C56 /* SnacktacularApp.swift */; };
 		DACD0A7229D0F52200B46C56 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD0A7129D0F52200B46C56 /* LoginView.swift */; };
 		DACD0A7429D0F52400B46C56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DACD0A7329D0F52400B46C56 /* Assets.xcassets */; };
@@ -28,6 +29,7 @@
 		DACD0A8C29D1EA1A00B46C56 /* Spot.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD0A8B29D1EA1A00B46C56 /* Spot.swift */; };
 		DACD0A8E29D1EB2800B46C56 /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD0A8D29D1EB2800B46C56 /* SpotDetailView.swift */; };
 		DACD0A9029D1ED3700B46C56 /* SpotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD0A8F29D1ED3700B46C56 /* SpotViewModel.swift */; };
+		DACF0E0129DD14E600BCB1DB /* SpotReviewRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACF0E0029DD14E600BCB1DB /* SpotReviewRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,7 @@
 		DA45D97529DA0F0300EAB4A0 /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
 		DA45D97729DA129A00EAB4A0 /* StarsSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarsSelectionView.swift; sourceTree = "<group>"; };
 		DA45D97929DA280000EAB4A0 /* ReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewModel.swift; sourceTree = "<group>"; };
+		DA9CE85629E0C1FD008AD022 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		DACD0A6C29D0F52200B46C56 /* Snacktacular.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Snacktacular.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DACD0A6F29D0F52200B46C56 /* SnacktacularApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnacktacularApp.swift; sourceTree = "<group>"; };
 		DACD0A7129D0F52200B46C56 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -50,6 +53,7 @@
 		DACD0A8B29D1EA1A00B46C56 /* Spot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spot.swift; sourceTree = "<group>"; };
 		DACD0A8D29D1EB2800B46C56 /* SpotDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
 		DACD0A8F29D1ED3700B46C56 /* SpotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotViewModel.swift; sourceTree = "<group>"; };
+		DACF0E0029DD14E600BCB1DB /* SpotReviewRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotReviewRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,7 @@
 				DACD0A8B29D1EA1A00B46C56 /* Spot.swift */,
 				DA45D97329DA0DDF00EAB4A0 /* Review.swift */,
 				DA45D96829D9FD9400EAB4A0 /* Place.swift */,
+				DA9CE85629E0C1FD008AD022 /* Photo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -94,6 +99,7 @@
 				DACD0A7129D0F52200B46C56 /* LoginView.swift */,
 				DACD0A8929D10A6B00B46C56 /* ListView.swift */,
 				DACD0A8D29D1EB2800B46C56 /* SpotDetailView.swift */,
+				DACF0E0029DD14E600BCB1DB /* SpotReviewRowView.swift */,
 				DA45D96A29D9FD9500EAB4A0 /* PlaceLookupView.swift */,
 				DA45D97529DA0F0300EAB4A0 /* ReviewView.swift */,
 				DA45D97729DA129A00EAB4A0 /* StarsSelectionView.swift */,
@@ -220,12 +226,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA9CE85729E0C1FD008AD022 /* Photo.swift in Sources */,
 				DACD0A8E29D1EB2800B46C56 /* SpotDetailView.swift in Sources */,
 				DACD0A7229D0F52200B46C56 /* LoginView.swift in Sources */,
 				DA45D97A29DA280000EAB4A0 /* ReviewViewModel.swift in Sources */,
 				DACD0A9029D1ED3700B46C56 /* SpotViewModel.swift in Sources */,
 				DACD0A7029D0F52200B46C56 /* SnacktacularApp.swift in Sources */,
 				DA45D97629DA0F0300EAB4A0 /* ReviewView.swift in Sources */,
+				DACF0E0129DD14E600BCB1DB /* SpotReviewRowView.swift in Sources */,
 				DA45D96D29D9FD9500EAB4A0 /* LocationManager.swift in Sources */,
 				DA45D96E29D9FD9500EAB4A0 /* PlaceLookupView.swift in Sources */,
 				DA45D97429DA0DDF00EAB4A0 /* Review.swift in Sources */,

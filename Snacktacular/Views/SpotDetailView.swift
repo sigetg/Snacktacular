@@ -7,6 +7,7 @@
 import SwiftUI
 import MapKit
 import FirebaseFirestoreSwift
+import PhotosUI
 
 struct SpotDetailView: View {
     
@@ -28,6 +29,14 @@ struct SpotDetailView: View {
     @State private var showingAsSheet = false
     @State private var mapRegion = MKCoordinateRegion()
     @State private var annotations: [Annotation] = []
+    @State private var selectedPhoto: PhotosPickerItem?
+    var avgRating: String {
+        guard reviews.count != 0 else {
+            return "-.-"
+        }
+        let avgValue = Double(reviews.reduce(0) {$0 + $1.rating}) / Double(reviews.count)
+        return String(format: "%.1f", avgValue)
+    }
     @Environment(\.dismiss) private var dismiss
     let regionSize = 500.0 //meters
     var previewRunning = false
@@ -52,10 +61,65 @@ struct SpotDetailView: View {
                 MapMarker(coordinate: annotation.coordinate)
             }
             .frame(height: 250)
+            
             .onChange(of: spot) { _ in
                 annotations = [Annotation(name: spot.name, address: spot.address, coordinate: spot.coordinate)]
                 mapRegion.center = spot.coordinate
             }
+            
+            
+            HStack {
+                Group {
+                    Text("Avg. Rating:")
+                        .font(.title2)
+                        .bold()
+                    Text(avgRating)
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(Color("SnackColor"))
+                }
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                
+                Spacer()
+                
+                Group {
+                    PhotosPicker(selection: $selectedPhoto, matching: .images, preferredItemEncoding: .automatic) {
+                        Image(systemName: "photo")
+                        Text("Photo")
+                    }
+                    .onChange(of: selectedPhoto) { newValue in
+                        Task {
+                            do {
+                                if let data = try await newValue?.loadTransferable(type: Data.self) {
+                                    if let uiImage = UIImage(data: data) {
+                                        //TODO: This is where you would set your Image = Image(uiImage: uiImage) or call your function to save the image
+                                        print("📸 successfully selected image!")
+                                    }
+                                }
+                            } catch {
+                                print("😡 ERROR: selected image failed \(error.localizedDescription)")
+                            }
+                        }
+                    }
+                    Button(action: {
+                        if spot.id == nil {
+                            showSaveAlert.toggle()
+                        } else {
+                            showReviewViewSheet.toggle()
+                        }
+                    }, label: {
+                        Image(systemName: "star.fill")
+                        Text("Rate")
+                    })
+                }
+                .font(Font.caption)
+                .buttonStyle(.borderedProminent)
+                .tint(Color("SnackColor"))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+            }
+            .padding(.horizontal)
             
             List {
                 Section {
@@ -63,33 +127,10 @@ struct SpotDetailView: View {
                         NavigationLink {
                             ReviewView(spot: spot, review: review)
                         } label: {
-                            Text(review.title) //TODO: Create a custom cell showing stars, title and body
+                            SpotReviewRowView(review: review)
                         }
-                    }
-                } header: {
-                    HStack {
-                        Text("Avg. Rating:")
-                            .font(.title2)
-                            .bold()
-                        Text("4.5") //TODO: Change to computed
-                            .font(.title)
-                            .fontWeight(.black)
-                            .foregroundColor(Color("SnackColor"))
-                        Spacer()
-                        Button("Rate It!") {
-                            if spot.id == nil {
-                                showSaveAlert.toggle()
-                            } else {
-                                showReviewViewSheet.toggle()
-                            }
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .bold()
-                        .tint(Color("SnackColor"))
-                        
                     }
                 }
-                .headerProminence(.increased)
             }
             .listStyle(.plain)
             

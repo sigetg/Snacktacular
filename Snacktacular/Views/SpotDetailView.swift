@@ -11,6 +11,10 @@ import PhotosUI
 
 struct SpotDetailView: View {
     
+    enum ButtonPressed {
+        case review, photo
+    }
+    
     struct Annotation: Identifiable {
         let id = UUID().uuidString
         var name: String
@@ -22,11 +26,17 @@ struct SpotDetailView: View {
     @EnvironmentObject var locationManager: LocationManager
     // The variable below does not have the right path. we will fix on onAppear
     @FirestoreQuery(collectionPath: "spots") var reviews: [Review]
+    @FirestoreQuery(collectionPath: "spots") var photos: [Photo]
+
     @State var spot: Spot
+    @State var newPhoto = Photo()
     @State private var showPlaceLookupSheet = false
     @State private var showReviewViewSheet = false
+    @State private var showPhotoViewSheet = false
     @State private var showSaveAlert = false
     @State private var showingAsSheet = false
+    @State private var buttonPressed = ButtonPressed.review
+    @State private var uiImageSelected = UIImage()
     @State private var mapRegion = MKCoordinateRegion()
     @State private var annotations: [Annotation] = []
     @State private var selectedPhoto: PhotosPickerItem?
@@ -67,6 +77,7 @@ struct SpotDetailView: View {
                 mapRegion.center = spot.coordinate
             }
             
+            SpotDetailPhotoScrollView(photos: photos, spot: spot)
             
             HStack {
                 Group {
@@ -93,8 +104,15 @@ struct SpotDetailView: View {
                             do {
                                 if let data = try await newValue?.loadTransferable(type: Data.self) {
                                     if let uiImage = UIImage(data: data) {
-                                        //TODO: This is where you would set your Image = Image(uiImage: uiImage) or call your function to save the image
+                                        uiImageSelected = uiImage
                                         print("📸 successfully selected image!")
+                                        newPhoto = Photo() //clears out contents if you add more than one photo to this spot
+                                        buttonPressed = .photo
+                                        if spot.id == nil {
+                                            showSaveAlert.toggle()
+                                        } else {
+                                            showPhotoViewSheet.toggle()
+                                        }
                                     }
                                 }
                             } catch {
@@ -103,6 +121,7 @@ struct SpotDetailView: View {
                         }
                     }
                     Button(action: {
+                        buttonPressed = .review
                         if spot.id == nil {
                             showSaveAlert.toggle()
                         } else {
@@ -141,6 +160,9 @@ struct SpotDetailView: View {
             if !previewRunning && spot.id != nil {
                 $reviews.path = "spots/\(spot.id ?? "")/reviews"
                 print("reviews.path = \($reviews.path)")
+                
+                $photos.path = "spots/\(spot.id ?? "")/photos"
+                print("photos.path = \($photos.path)")
             } else { //spot.id starts out as nil
                 showingAsSheet = true
             }
@@ -157,7 +179,7 @@ struct SpotDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(spot.id == nil)
         .toolbar {
-            if showingAsSheet { //new spot, sh show Cancel / Save buttons
+            if showingAsSheet { //new spot, show Cancel / Save buttons
                 if spot.id == nil && showingAsSheet {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") {
@@ -205,6 +227,11 @@ struct SpotDetailView: View {
                 ReviewView(spot: spot, review: Review())
             }
         }
+        .sheet(isPresented: $showPhotoViewSheet) {
+            NavigationStack {
+                PhotoView(photo: $newPhoto, uiImage: uiImageSelected, spot: spot)
+            }
+        }
         .alert("Cannot Rate Place Unless it Is Saved", isPresented: $showSaveAlert) {
             Button("Cancel", role: .cancel) {}
             Button("Save", role: .none) {
@@ -214,7 +241,14 @@ struct SpotDetailView: View {
                     if success {
                         // if we didn't update the path after saving the spot, we wouldn't be able to show new reviews added
                         $reviews.path = "spots/\(spot.id ?? "")/reviews"
-                        showReviewViewSheet.toggle()
+                        $photos.path = "spots/\(spot.id ?? "")/photos"
+                        switch buttonPressed {
+                        case .review:
+                            showReviewViewSheet.toggle()
+                        case .photo:
+                            showPhotoViewSheet.toggle()
+
+                        }
                     } else {
                         print("😡 Dang! Error saving spot!")
                     }

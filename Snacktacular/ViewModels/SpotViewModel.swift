@@ -46,9 +46,12 @@ class SpotViewModel: ObservableObject {
             return false
         }
         
-        let photoName = UUID().uuidString // this will be the name of the image file
+        var photoName = UUID().uuidString // this will be the name of the image file
+        if photo.id != nil {
+            photoName = photo.id! // if i have a photo id, use it as the photoname, this happens when you are updating an existing photo instead of adding a new one. It will resave the photo but its ok since it will just overwrite the existing one.
+        }
         let storage = Storage.storage() //Create a firebase storage instance
-        let storageRef = Storage.reference().child("\(spotID)/\(photoName).jpeg")
+        let storageRef = storage.reference().child("\(spotID)/\(photoName).jpeg")
         
         guard let resizedImage = image.jpegData(compressionQuality: 0.2) else {
             print("😡 ERROR: could not resize image")
@@ -83,7 +86,7 @@ class SpotViewModel: ObservableObject {
         do {
             var newPhoto = photo
             newPhoto.imageURLString = imageURLString
-            try db.collection(collectionString).document(photoName).setData(newPhoto.dictionary)
+            try await db.collection(collectionString).document(photoName).setData(newPhoto.dictionary)
             print("😎 data updated successfully!")
             return true
         } catch {
